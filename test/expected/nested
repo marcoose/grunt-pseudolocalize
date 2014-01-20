@@ -1,0 +1,21 @@
+{
+    "prompt": {
+        "message": "Ɯɧăƭ ɨš ɣǒʊɾ ƞăɱə?",
+        "description": "Get username"
+    },
+    "welcome": {
+        "message": "Ĥəļļǒ, $1",
+        "description": "Greet user"
+    },
+    "logff": {
+        "message": "Ƨəə ɣǒʊ ļăƭəɾ $1!",
+        "description": "Say bye",
+        "metadata": {
+            "deeper": "another level of stuff"
+        }
+    },
+    "missing": {
+        "description": "No 'message' key to be translated'",
+        "message": ""
+    }
+}
