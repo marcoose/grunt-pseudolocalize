@@ -1,7 +1,7 @@
 {
   "name": "grunt-pseudolocalize",
   "description": "Pseudolocalizes a JSON key-value locale file into 'pseudo-English' for testing.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/mrussell/grunt-pseudolocalize",
   "author": {
     "name": "Marcus Russell",
@@ -27,11 +27,13 @@
   "scripts": {
     "test": "grunt test"
   },
+  "dependencies": {
+    "lodash": "2.4.1"
+  },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "lodash": "2.4.1",
     "grunt": "~0.4.1"
   },
   "peerDependencies": {
