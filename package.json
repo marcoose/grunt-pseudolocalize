@@ -2,7 +2,7 @@
   "name": "grunt-pseudolocalize",
   "description": "Pseudolocalizes a JSON key-value locale file into 'pseudo-English' for testing.",
   "version": "0.1.1",
-  "homepage": "https://github.com/mrussell/grunt-pseudolocalize",
+  "homepage": "https://github.com/marcoose/grunt-pseudolocalize",
   "author": {
     "name": "Marcus Russell",
     "email": "marcus@marcusrussell.com"
@@ -12,32 +12,30 @@
     "url": "git://github.com/mrussell/grunt-pseudolocalize.git"
   },
   "bugs": {
-    "url": "https://github.com/mrussell/grunt-pseudolocalize/issues"
+    "url": "https://github.com/marcoose/grunt-pseudolocalize/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/mrussell/grunt-pseudolocalize/blob/master/LICENSE-MIT"
+      "url": "https://github.com/marcoose/grunt-pseudolocalize/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "Gruntfile.js",
+  "main": "grunt.js",
+  "bin": "bin/grunt-pseudolocalize",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": "*"
   },
   "scripts": {
     "test": "grunt test"
   },
   "dependencies": {
-    "lodash": "2.4.1"
+    "lodash": "2.x.x"
   },
   "devDependencies": {
+	"grunt": "0.4.x"
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.1"
-  },
-  "peerDependencies": {
-    "grunt": "~0.4.1"
+    "grunt-contrib-nodeunit": "~0.2.0",    
   },
   "keywords": [
     "gruntplugin"
