@@ -44,22 +44,33 @@ Default value: `true`
 Whether or not the output JSON file should be "pretty-printed" with indentation and multiple lines, or simply stringified into a single line.
 
 #### options.pad
-Type: `Float`
+Type: `Number`
 Default value: `0.0`
 
 A percentage in decimal (between 0.0 and 1.0) to increase input string length by adding 'x' characters to end of string.  Used to inflate length of values as many languages use more characters than English when translated.
+
+For example, a value of 0.3 would make strings 30% longer -- a 10 character string would be pseudolocalized and then have 3 'x' characters appended (10 * 0.3 = 3). 
+
+#### options.padChar
+Type: `String`
+Default value: `x`
+
+A single character string to be repeated at the end of values requiring padding.  Only used when `options.pad` is greater than 0.
 
 #### options.key
 Type: `String`
 Default value: undefined
 
-The name of the key within the 'value' object in a nested JSON file to translate, if required.  e.g.
-this setting is not needed for a "flat" structure:
+The name of the key within the 'value' object in a nested JSON file to translate, if required.  
+This setting is not needed for a "flat" structure:
+```js
 {
   "key": "value"
-}  
+}
+```  
 
 but a setting of 'message.text' might be used for a "deeper" structure:
+```js
 {
   "key": {
   	"message": {
@@ -69,6 +80,7 @@ but a setting of 'message.text' might be used for a "deeper" structure:
 	"metadata": "stuff"
   } 
 }
+```
 
 ### Usage Examples
 
@@ -105,5 +117,6 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+* v0.1.3 - made 'padChar' configurable
 * v0.1.2 - updated dependencies
 * v0.1.0 - initial version

@@ -11,6 +11,7 @@ module.exports = function(grunt) {
 	var _ = require('lodash'),
 	defaults = {
 		pad: 0,
+		padChar: 'x',
 		pretty: true
 	},
 	pseudoUpper = [
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
 		'\u0290'  // z - 122
 	];
 
-	function pseudo(val, pad) {
+	function pseudo(val) {
 		var code = 0,
 			output = '';
 
@@ -87,10 +88,6 @@ module.exports = function(grunt) {
 					output += val.charAt(i);
 				}
 			}
-			if (pad) {
-				var xtra = Math.round(output.length * pad);
-				output += new Array(xtra + 1).join('x');
-			}
 		}
 		return output;
 	}
@@ -102,6 +99,10 @@ module.exports = function(grunt) {
 		if (Number.isNaN(options.pad) || (options.pad < 0 || options.pad > 1)) {
 			grunt.fatal("Optional 'pad' setting must be a number between 0 and 1 representing " +
 			"percentage of input string\nlength to increase by (e.g. 0.25 adds 25% length.");
+		}
+
+		if (options.padChar && (options.padChar.length !== 1)) {
+			grunt.fatal("Optional 'padChar' setting must be a single character.");		
 		}
 
 		this.files.forEach(function(file) {
@@ -132,9 +133,13 @@ module.exports = function(grunt) {
 
 				_.forOwn(contents, function(val, prop) {
 					if (options.key) {
-						val[options.key] = pseudo(val[options.key], options.pad);
+						val[options.key] = pseudo(val[options.key]);
 					} else {
-						val = pseudo(val, options.pad);
+						val = pseudo(val);
+					}
+					if (options.pad) {
+						var xtra = Math.round(val.length * options.pad);
+						val += new Array(xtra + 1).join(options.padChar);
 					}
 					contents[prop] = val;
 				});
