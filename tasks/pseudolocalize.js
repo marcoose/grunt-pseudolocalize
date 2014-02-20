@@ -10,9 +10,12 @@ module.exports = function(grunt) {
 	'use strict';
 	var _ = require('lodash'),
 	defaults = {
-		pad: 0,
-		padChar: 'x',
-		pretty: true
+		padPercent: 0,
+		padString: 'x',
+		pretty: true,
+		prefix: '',
+		suffix: '',
+		splitRegex: ''
 	},
 	pseudoUpper = [
 		'\u0102', //A - 65
@@ -33,7 +36,7 @@ module.exports = function(grunt) {
 		'\u01A4', //P - 80
 		'\u01EC', //Q - 81
 		'\u01A6', //R - 82
-		'\u01A7', //S - 83
+		'\u0405', //S - 83
 		'\u04AC', //T - 84
 		'\u01D3', //U - 85
 		'\u0476', //V - 86
@@ -47,7 +50,7 @@ module.exports = function(grunt) {
 		'\u0253', // b - 98
 		'\u0109', // c - 99
 		'\u0257', // d - 100
-		'\u0259', // e - 101
+		'\u0205', // e - 101
 		'\u0192', // f - 102
 		'\u0260', // g - 103
 		'\u0267', // h - 104
@@ -71,10 +74,34 @@ module.exports = function(grunt) {
 		'\u0290'  // z - 122
 	];
 
-	function pseudo(val) {
-		var code = 0,
-			output = '';
+	function process(val, options) {
+		var padding = '', output = '';
+		if (val) {
+			if (options.padPercent > 0) {
+				var len = Math.round(val.length * options.padPercent),
+					pads = Math.ceil(len / options.padString.length);
+				padding = (new Array(pads + 1).join(options.padString)).slice(0, len);
+			}
 
+			if (options.splitRegex) {
+				var splitter = new RegExp('(' + options.splitRegex + ')'), i;
+				// wrap value in single character so that we know first element will never be match
+				var parts = ('x' + val + 'x').split(splitter);
+				for (i = 0; i < parts.length; i++) {
+					if (i % 2 === 0) { // only localize unmatched parts of input
+						parts[i] = pseudo(parts[i]);
+					}
+				}
+				output = parts.join('').slice(1, -1);  // cut off temp chars we added				
+			} else {
+				output = pseudo(val);
+			}			
+		}
+		return options.prefix + output + padding + options.suffix;
+	}
+
+	function pseudo(val) {
+		var code, output = '';
 		if (val) {
 			for (var i = 0; i < val.length; i += 1) {
 				code = val.charCodeAt(i);
@@ -96,13 +123,14 @@ module.exports = function(grunt) {
 		'Pseudolocalize English JSON key-value locale file for testing purposes.', function() {
 		var options = this.options(defaults);
 
-		if (Number.isNaN(options.pad) || (options.pad < 0 || options.pad > 1)) {
-			grunt.fatal("Optional 'pad' setting must be a number between 0 and 1 representing " +
-			"percentage of input string\nlength to increase by (e.g. 0.25 adds 25% length.");
+		if (Number.isNaN(options.padPercent) || (options.padPercent < 0 || options.padPercent > 1)) {
+			grunt.fatal(grunt.log.wraptext(80,
+			"Optional 'padPercent' setting must be a number between 0 and 1 representing " +
+			"percentage of input string\nlength to increase by (e.g. 0.25 adds 25% length."));
 		}
 
-		if (options.padChar && (options.padChar.length !== 1)) {
-			grunt.fatal("Optional 'padChar' setting must be a single character.");		
+		if (options.padPercent > 0 && !options.padString) {
+			grunt.fatal("Optional 'padString' must be a non-empty string value (default 'x')");
 		}
 
 		this.files.forEach(function(file) {
@@ -112,7 +140,7 @@ module.exports = function(grunt) {
 				var sourceFilenames = file.src.filter(function(filepath) {
 					// Warn on and remove invalid source files (if nonull was set).
 					if (!grunt.file.exists(filepath)) {
-						grunt.warn('Source file "' + filepath + '" not found.');
+						grunt.log.warn('Source file "' + filepath + '" not found.');
 						return false;
 					} else {
 						return true;
@@ -120,8 +148,7 @@ module.exports = function(grunt) {
 				});
 				var numFiles = sourceFilenames.length;
 				if (numFiles <= 0) {
-					grunt.warn.writeln('No source files found.');
-					return;
+					grunt.warn('No source files found.');
 				}
 
 				grunt.verbose.ok('Loading source files...');
@@ -133,13 +160,9 @@ module.exports = function(grunt) {
 
 				_.forOwn(contents, function(val, prop) {
 					if (options.key) {
-						val[options.key] = pseudo(val[options.key]);
+						val[options.key] = process(val[options.key], options);
 					} else {
-						val = pseudo(val);
-					}
-					if (options.pad) {
-						var xtra = Math.round(val.length * options.pad);
-						val += new Array(xtra + 1).join(options.padChar);
+						val = process(val, options);
 					}
 					contents[prop] = val;
 				});

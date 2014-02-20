@@ -43,23 +43,45 @@ Default value: `true`
 
 Whether or not the output JSON file should be "pretty-printed" with indentation and multiple lines, or simply stringified into a single line.
 
-#### options.pad
+#### options.padPercent
 Type: `Number`
 Default value: `0.0`
 
-A percentage in decimal (between 0.0 and 1.0) to increase input string length by adding 'x' characters to end of string.  Used to inflate length of values as many languages use more characters than English when translated.
+A percentage in decimal (between 0.0 and 1.0) to increase input string length by adding characters to end of string.  Used to inflate length of values as many languages use more characters than English when translated.
 
-For example, a value of 0.3 would make strings 30% longer -- a 10 character string would be pseudolocalized and then have 3 'x' characters appended (10 * 0.3 = 3). 
+For example, a value of 0.3 would make strings 30% longer &mdash; a 10 character string would be pseudolocalized and then have 3 characters appended (10 * 0.3 = 3).
 
-#### options.padChar
+The padding characters come from repeating sequences of `options.padString` until the required number of characters is produced.  
+
+#### options.padString
 Type: `String`
 Default value: `x`
 
-A single character string to be repeated at the end of values requiring padding.  Only used when `options.pad` is greater than 0.
+A string of one or more characters to be repeated at the end of values requiring padding.  Only used when `options.pad` is greater than 0.
+
+#### options.prefix
+Type: `String`
+Default value: `''`
+
+A string to be added to the beginning of each pseudolocalized value.  The `options.padPercent` calculation does not take this additional length into account.
+
+#### options.suffix
+Type: `String`
+Default value: `''`
+
+A string to be added to the end of each pseudolocalized value.  The `options.padPercent` calculation does not take this additional length into account.
+
+#### options.splitRegex
+Type: `String`
+Default value: `undefined`
+
+An optional string that will be used to create a new RegExp() applied to the input value.  The input value will be .split by this regex, and any matching parts will not be pseudolocalized.  This is useful to prevent tampering with variables or other not-to-be-translated parts in a message catalog.
+
+*e.g. to ignore handlebar variables use the string* `{{\\w+}}` * &mdash; for an input value of `translate me {{but not me}}`, the `{{but not me}}` will be left untouched*
 
 #### options.key
 Type: `String`
-Default value: undefined
+Default value: `undefined`
 
 The name of the key within the 'value' object in a nested JSON file to translate, if required.  
 This setting is not needed for a "flat" structure:
@@ -113,10 +135,34 @@ grunt.initConfig({
 })
 ```
 
+```js
+grunt.initConfig({
+  pseudolocalize: {
+    options: {
+      pretty: true,
+      prefix: '[',
+      suffix: ']',
+      padString: '!pseudo',
+      padPercent: 0.25,
+      splitRegex: '{{\\w+}}' // need to escape the backslash in regex
+    },
+    files: [{
+      		src: 'i18n/*_*.json',
+      		dest: 'msgs_ps.json'
+    	}]
+  }
+})
+```
+
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+* v0.2.0
+  - replaced 'pad/padChar' with 'padPercent/padString'
+  - added split regex option to preserve variables
+  - added prefix/suffix options 
 * v0.1.3 - made 'padChar' configurable
 * v0.1.2 - updated dependencies
 * v0.1.0 - initial version

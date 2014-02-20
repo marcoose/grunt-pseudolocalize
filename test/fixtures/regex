@@ -1,0 +1,5 @@
+{
+	"KEY1": "A string with {{placeholder}} in English",
+	"KEY2": "{{start}} stuff {{end}}",
+	"KEY3": "several {{keys}} that should {{not}}{{be}} localized and ${this} one that should"
+}

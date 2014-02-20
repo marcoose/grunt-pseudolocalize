@@ -45,7 +45,8 @@ module.exports = function(grunt) {
 			},
 			padded: {
 				options: {
-					pad: 0.25
+					padPercent: 0.35,
+					padString: '!pseudo'
 				},
 				files: {
 					'tmp/padded': ['test/fixtures/basic'],
@@ -64,7 +65,16 @@ module.exports = function(grunt) {
 				files: {
 					'tmp/nested': ['test/fixtures/nested'],
 				}
+			},
+			regex: {
+				options: {
+					splitRegex: '{{\\w+}}'					
+				},
+				files: {
+					'tmp/regex': ['test/fixtures/regex'],
+				}
 			}
+
 		},
 		// Unit tests.
 		nodeunit: {

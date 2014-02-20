@@ -1,14 +1,14 @@
 {
     "prompt": {
-        "message": "Ɯɧăƭ ɨš ɣǒʊɾ ƞăɱə?",
+        "message": "Ɯɧăƭ ɨš ɣǒʊɾ ƞăɱȅ?",
         "description": "Get username"
     },
     "welcome": {
-        "message": "Ĥəļļǒ, $1",
+        "message": "Ĥȅļļǒ, $1",
         "description": "Greet user"
     },
     "logff": {
-        "message": "Ƨəə ɣǒʊ ļăƭəɾ $1!",
+        "message": "Ѕȅȅ ɣǒʊ ļăƭȅɾ $1!",
         "description": "Say bye",
         "metadata": {
             "deeper": "another level of stuff"

@@ -36,5 +36,10 @@ exports.pseudolocalize = {
 		test.expect(1);
 		test.ok(areFilesEqual('nested'), 'nested output should be handled correctly');
 		test.done();
+	},
+	regex: function(test) {
+		test.expect(1);
+		test.ok(areFilesEqual('regex'), 'regex matched content is not pseudolocalized');
+		test.done();	
 	}
 };
