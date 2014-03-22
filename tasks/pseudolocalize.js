@@ -76,7 +76,16 @@ module.exports = function(grunt) {
 
 	function process(val, options) {
 		var padding = '', output = '';
-		if (val) {
+
+		if (typeof val === 'object') {
+			var result = {};
+
+			for (var key in val) {
+				result[key] = process(val[key], options);
+			}
+
+			return result;
+		} else if (val) {
 			if (options.padPercent > 0) {
 				var len = Math.round(val.length * options.padPercent),
 					pads = Math.ceil(len / options.padString.length);
@@ -97,6 +106,7 @@ module.exports = function(grunt) {
 				output = pseudo(val);
 			}			
 		}
+
 		return options.prefix + output + padding + options.suffix;
 	}
 

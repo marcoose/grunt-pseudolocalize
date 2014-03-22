@@ -104,6 +104,8 @@ but a setting of 'message.text' might be used for a "deeper" structure:
 }
 ```
 
+When the `key` option isn't set, all the nested objects will be recursively processed.
+
 ### Usage Examples
 
 #### Default Options
