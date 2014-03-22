@@ -66,6 +66,14 @@ module.exports = function(grunt) {
 					'tmp/nested': ['test/fixtures/nested'],
 				}
 			},
+			nested2: {
+				options: {
+					pretty: true
+				},
+				files: {
+					'tmp/nested2': ['test/fixtures/nested2'],
+				}
+			},
 			regex: {
 				options: {
 					splitRegex: '{{\\w+}}'					
