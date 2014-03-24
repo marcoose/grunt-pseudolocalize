@@ -161,6 +161,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+* v0.2.1 - process nested objects recursively (pull request #1, thanks @chengyin)
 * v0.2.0
   - replaced 'pad/padChar' with 'padPercent/padString'
   - added split regex option to preserve variables
